@@ -8,6 +8,7 @@
       </div>
     </template>
     <template v-else>
+      <h1>Character list: </h1>
       <ul id="characters-list">
         <CharacterElement
           v-for="(ch, index) in charactersList"
@@ -23,7 +24,7 @@
 import { Options, Vue } from 'vue-class-component'
 import { reactive } from 'vue'
 import { getCharacters } from '@/services/api'
-import { RMCharacter } from '@/interfaces'
+import { Character } from '@/interfaces'
 
 import CharacterElement from '@/components/CharacterElement.vue'
 
@@ -34,7 +35,7 @@ import CharacterElement from '@/components/CharacterElement.vue'
 })
 export default class Home extends Vue {
   isLoading = Boolean(true)
-  charactersList = reactive<RMCharacter[]>([])
+  charactersList = reactive<Character[]>([])
 
   async mounted (): Promise<void> {
     const response = await getCharacters()
