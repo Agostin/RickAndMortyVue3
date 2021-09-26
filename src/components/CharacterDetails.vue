@@ -1,42 +1,53 @@
 <template>
-<div class="accordion accordion-flush" id="accordionFlushExample">
-  <div class="accordion-item">
-    <h2 class="accordion-header" id="flush-headingOne">
-      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-        Accordion Item #1
-      </button>
-    </h2>
-    <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
-      <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the first item's accordion body.</div>
-    </div>
-  </div>
-  <div class="accordion-item">
-    <h2 class="accordion-header" id="flush-headingTwo">
-      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
-        Accordion Item #2
-      </button>
-    </h2>
-    <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
-      <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the second item's accordion body. Let's imagine this being filled with some actual content.</div>
-    </div>
-  </div>
-  <div class="accordion-item">
-    <h2 class="accordion-header" id="flush-headingThree">
-      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
-        Accordion Item #3
-      </button>
-    </h2>
-    <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
-      <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the third item's accordion body. Nothing more exciting happening here in terms of content, but just filling up the space to make it look, at least at first glance, a bit more representative of how this would look in a real-world application.</div>
+<div class="modal fade" :class="{ 'show d-block': showModal }" v-if="showModal">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Who's {{ content.name }}?</h5>
+          <button type="button" class="btn-close" @click="showModal = false"></button>
+        </div>
+        <div class="modal-body">
+          <p>Modal body text goes here.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" @click="showModal = false">Close, thanks</button>
+        </div>
+      </div>
     </div>
   </div>
 </div>
 </template>
 <script lang="ts">
+import { Character } from '@/interfaces'
 import { Vue, Options } from 'vue-class-component'
+import { rmStore } from '@/store/store'
 
-@Options({})
+@Options({
+  props: {
+    show: String
+  },
+  watch: {
+    show: {
+      handler (status: boolean) {
+        this.showModal = status !== null
+        if (this.showModal) {
+          this.modalContent = rmStore.getState().currentCharacter
+        } else {
+          this.modalContent = null
+        }
+      },
+      immediate: true
+    }
+  }
+})
 export default class CharacterDetails extends Vue {
+  showModal = Boolean(false)
+  modalContent: Character | null = null
+
+  get content (): Character {
+    return this.modalContent as Character
+  }
 }
 </script>
 <style lang="scss">

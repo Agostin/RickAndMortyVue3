@@ -1,22 +1,24 @@
 <template>
   <div id="home">
-    <template v-if="isLoading">
-      <div class="d-flex justify-content-center">
-        <div class="spinner-border" role="status">
-          <span class="visually-hidden">Loading...</span>
+    <div class="container">
+      <template v-if="isLoading">
+        <div class="d-flex justify-content-center">
+          <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
         </div>
-      </div>
-    </template>
-    <template v-else>
-      <h1>Character list: </h1>
-      <ul id="characters-list">
-        <CharacterElement
-          v-for="(ch, index) in charactersList"
-          :key="index"
-          :info="ch"
-        />
-      </ul>
-    </template>
+      </template>
+      <template v-else>
+        <h1>Character list: </h1>
+        <ul id="characters-list">
+          <CharacterElement
+            v-for="(ch, index) in charactersList"
+            :key="index"
+            :character-id="ch.id"
+          />
+        </ul>
+      </template>
+    </div>
   </div>
 </template>
 
