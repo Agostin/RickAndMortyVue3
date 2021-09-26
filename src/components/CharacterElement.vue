@@ -28,20 +28,21 @@
               <span class="visually-hidden">Loading...</span>
             </div>
           </div>
+          <!-- PUT IN A MODAL!! -->
           <div class="row" v-if="!detailsFetchingLoader">
             <div class="col">
-              <div :class="`collapse show multi-collapse-${character.id}`" :id="`locationCollapse${character.id}`">
-                <div class="card card-body location-info" v-if="locationDetails">
+              <div :class="`collapse multi-collapse-${character.id}`" :id="`locationCollapse${character.id}`">
+                <div class="card card-body location-info" v-if="characterLocation">
                   <strong>Location:</strong>
-                  {{ locationDetails?.name }}
+                  {{ characterLocation.name }}
                 </div>
               </div>
             </div>
             <div class="col">
-              <div :class="`collapse show multi-collapse-${character.id}`" :id="`episodesCollapse${character.id}`">
-                <div class="card card-body episodes-info" v-if="episodeDetails">
+              <div :class="`collapse multi-collapse-${character.id}`" :id="`episodesCollapse${character.id}`">
+                <div class="card card-body episodes-info" v-if="characterEpisodes.length">
                   <strong>Episodes:</strong>
-                  {{ episodeDetails?.length }}
+                  {{ characterEpisodes.length }}
                 </div>
               </div>
             </div>
@@ -54,8 +55,9 @@
 
 <script lang="ts">
 import { Character, Episode, Location } from '@/interfaces'
-import { getEpisodesByIds, getLocationById, getLocationByName } from '@/services/api'
+import { getEpisodesByIds, getLocationByName } from '@/services/api'
 import { Options, Vue } from 'vue-class-component'
+import { rmStore } from '@/store/store'
 
 @Options({
   props: {
@@ -63,10 +65,13 @@ import { Options, Vue } from 'vue-class-component'
   },
   watch: {
     info: {
+      // HANDLE ID CHANGE
       async handler (obj: Character) {
         this.character = Object.assign({}, this.character, obj)
+        rmStore.setCurrentCharacterData(this.character)
       },
-      immediate: true
+      immediate: true,
+      deep: true
     }
   }
 })
@@ -76,6 +81,14 @@ export default class CharacterElement extends Vue {
   _serializedEpisodeIds!: string
   episodeDetails: Episode[] | null = null
   locationDetails: Location | null = null
+
+  get characterEpisodes (): Episode[] {
+    return rmStore.getState().currentCharacter.episode as Episode[]
+  }
+
+  get characterLocation (): Location {
+    return rmStore.getState().currentCharacter.location as Location
+  }
 
   _serializeEpisodesIds (): string {
     return this.character?.episode
@@ -92,12 +105,14 @@ export default class CharacterElement extends Vue {
 
   async fetchEpisodesInfo (episodeIds: string): Promise<void> {
     this.episodeDetails = await getEpisodesByIds(episodeIds) as Episode[]
-    console.log(this.episodeDetails)
+    rmStore.fillupCharacterEpisodes(this.character?.id as number, this.episodeDetails)
+    console.log(rmStore.getState().currentCharacter)
   }
 
   async fetchLocationInfoFromName (locationName: string): Promise<void> {
     this.locationDetails = await getLocationByName(locationName) as Location
-    console.log(this.locationDetails)
+    rmStore.fillupCharacterLocation(this.character?.id as number, this.locationDetails)
+    console.log(rmStore.getState().currentCharacter)
   }
 }
 </script>

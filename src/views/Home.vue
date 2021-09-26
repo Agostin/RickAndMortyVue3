@@ -25,6 +25,7 @@ import { Options, Vue } from 'vue-class-component'
 import { reactive } from 'vue'
 import { getCharacters } from '@/services/api'
 import { Character } from '@/interfaces'
+import { rmStore } from '@/store/store'
 
 import CharacterElement from '@/components/CharacterElement.vue'
 
@@ -41,6 +42,7 @@ export default class Home extends Vue {
     const response = await getCharacters()
     if (typeof response !== 'string') {
       this.charactersList = response.results
+      rmStore.setCharactersList(this.charactersList)
     }
     this.isLoading = false
   }
