@@ -15,37 +15,12 @@ export function getCharacters(page = 1): Promise<RMApiResponse | string> {
     })
 }
 
-// function _serializeFilters(objFilter: Record<string, string>) {
-//   if (typeof objFilter === 'object') {
-//     return new URLSearchParams(objFilter).toString()
-//   } else {
-//     return objFilter
-//   }
-// }
-
-// export function getCharacterById(chId: number, filters?: Record<string, string>): Promise<Character | string> {
-//   let apiPath = `${basePath}/character/${chId}`
-//   let chFilters = ''
-//   if (filters) {
-//     chFilters = _serializeFilters(filters)
-//     apiPath += `?${chFilters}`
-//   }
-
-//   return axios
-//     .get(apiPath)
-//     .then((res: AxiosResponse) => {
-//       return res.data as Character
-//     })
-//     .catch((err: AxiosError) => {
-//       return err.code as string
-//     })
-// }
-
 export function getEpisodesByIds(episodeIds: string): Promise<Episode[] | string> {
+  const isMoreThanOneEpisode = episodeIds.split(',').length > 1
   return axios
     .get(`${basePath}/episode/${episodeIds}`)
     .then((res: AxiosResponse) => {
-      return res.data as Episode[]
+      return (isMoreThanOneEpisode ? res.data : [res.data]) as Episode[]
     })
     .catch((err: AxiosError) => {
       return err.code as string
@@ -63,11 +38,11 @@ export function getLocationById(locationId: number): Promise<Location | string> 
     })
 }
 
-export function getLocationByName(locationName: string): Promise<Location | string> {
+export function getLocationByName(locationName: string): Promise<Location[] | string> {
   return axios
     .get(`${basePath}/location/?name=${locationName}`)
     .then((res: AxiosResponse) => {
-      return res.data[0] as Location
+      return (res.data as RMApiResponse).results as Location[]
     })
     .catch((err: AxiosError) => {
       return err.code as string

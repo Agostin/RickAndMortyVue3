@@ -45,5 +45,5 @@ export interface Character {
 
 export interface RMApiResponse {
   info: ApiPaginationInfo;
-  results: Character[]
+  results: Character[] | Location[] | Episode[]
 }

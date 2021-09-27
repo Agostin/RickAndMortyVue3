@@ -14,7 +14,7 @@
           <div class="col-md-9 ps-3 text-start">
             <strong class="fs-5">{{ character.name }}</strong>
             <p class="mb-0" v-if="character.species">
-              Gender: <span class="badge bg-warning me-2">{{ character.species }}</span>
+              Species: <span class="badge bg-primary me-2">{{ character.species }}</span>
             </p>
             <p class="mb-0" v-if="character.gender">
               Gender: <span class="badge bg-secondary me-2">{{ character.gender }}</span>
@@ -28,7 +28,7 @@
                 <tbody>
                   <tr>
                     <td>{{ characterLocation.name }}</td>
-                    <td>{{ characterLocation.residents }}</td>
+                    <td>{{ characterLocation.residents?.length }}</td>
                     <td>{{ characterLocation.dimension }}</td>
                   </tr>
                 </tbody>
@@ -100,7 +100,7 @@ export default class CharacterDetails extends Vue {
   }
 
   _serializeEpisodesIds (): string {
-    return this.character?.episode
+    return (this.character?.episode as string[])
       .flatMap((episodeUrl: string) => episodeUrl.split('/').slice(-1))
       .join(',') as string
   }
@@ -111,7 +111,9 @@ export default class CharacterDetails extends Vue {
   }
 
   async fetchLocationInfoFromName (locationName: string): Promise<void> {
-    this.locationDetails = await getLocationByName(locationName) as Location
+    const locationMatches = await getLocationByName(locationName) as Location[]
+    // I know, it's a bit forced result...
+    this.locationDetails = locationMatches[0]
     rmStore.fillupCharacterLocation(this.character?.id as number, this.locationDetails)
   }
 }

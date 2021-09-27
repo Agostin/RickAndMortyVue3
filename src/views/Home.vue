@@ -50,7 +50,7 @@ export default class Home extends Vue {
   async mounted (): Promise<void> {
     const response = await getCharacters()
     if (typeof response !== 'string') {
-      this.charactersList = response.results
+      this.charactersList = response.results as Character[]
       rmStore.setCharactersList(this.charactersList)
     }
     this.isLoading = false
