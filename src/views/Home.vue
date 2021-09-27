@@ -14,7 +14,7 @@
           <div class="d-block my-2">
             <input type="text" class="form-control" placeholder="Filter by name" v-model="nameFilter">
           </div>
-          <ul class="p-0" id="characters-list">
+          <ul class="p-0 m-0 row" id="characters-list">
             <CharacterElement
               v-for="(ch, index) in filteredList"
               :key="index" :character-id="ch.id"
@@ -22,7 +22,7 @@
             />
           </ul>
           <CharacterDetails :show="toggleMoreDetails" />
-          <Paginator />
+          <Paginator class="mt-3" @on-page-selected="loadNewCharacterPage($event)" />
         </div>
       </div>
     </div>
@@ -48,7 +48,7 @@ import Paginator from '@/components/Paginator.vue'
   }
 })
 export default class Home extends Vue {
-  isLoading = Boolean(true)
+  isLoading = Boolean(false)
   toggleMoreDetails: string | null = null
   charactersList = reactive<Character[]>([])
   nameFilter?: string = ''
@@ -62,13 +62,24 @@ export default class Home extends Vue {
     }
   }
 
-  async mounted (): Promise<void> {
-    const response = await getCharacters()
+  mounted (): void {
+    this.loadCharacters()
+  }
+
+  async loadCharacters (page = 1): Promise<void> {
+    this.isLoading = true
+    const response = await getCharacters(page)
     if (typeof response !== 'string') {
       this.charactersList = response.results as Character[]
       rmStore.setCharactersList(this.charactersList)
+      rmStore.setCharactersListInfo(response.info)
     }
     this.isLoading = false
+  }
+
+  loadNewCharacterPage (page: number): void {
+    rmStore.setCurrentPage(page)
+    this.loadCharacters(page)
   }
 }
 </script>

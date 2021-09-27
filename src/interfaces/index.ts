@@ -1,4 +1,4 @@
-interface ApiPaginationInfo {
+export interface ApiPaginationInfo {
   count: number;
   pages: number;
   next: string | null;

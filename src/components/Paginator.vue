@@ -1,17 +1,22 @@
 <template>
 <nav>
-  <ul class="pagination justify-content-end">
+  <ul class="pagination justify-content-center">
     <li class="page-item">
-      <a class="page-link" @click="loadNextPage(1)" aria-label="Previous">
-        <span aria-hidden="true">&laquo;</span>
+      <a class="page-link" @click="loadPage(0)" aria-label="Previous">
+        <span aria-hidden="true">Previous</span>
       </a>
     </li>
-    <li class="page-item" v-for="(item, index) in listItems" :key="index">
-      <a class="page-link" @click="loadNextPage(index)">{{ index }}</a>
+    <li class="page-item" :class="{ 'active': item === currentPage }" v-for="item in charactersListMetas.pages" :key="item">
+      <template v-if="item < 3 || item > charactersListMetas.pages - 2">
+        <a class="page-link" @click="loadPage(item)">{{ item }}</a>
+      </template>
+      <template v-else-if="item === 3">
+        <a class="page-link" href="#">...</a>
+      </template>
     </li>
     <li class="page-item">
-      <a class="page-link" @click="loadNextPage(listItems.length)" aria-label="Next">
-        <span aria-hidden="true">&raquo;</span>
+      <a class="page-link" @click="loadPage(charactersListMetas.count)" aria-label="Next">
+        <span aria-hidden="true">Next</span>
       </a>
     </li>
   </ul>
@@ -19,17 +24,29 @@
 </template>
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component'
+import { rmStore } from '@/store/store'
+import { ApiPaginationInfo } from '@/interfaces'
 
 @Options({
-  props: {
-    items: Array
-  }
+  emits: ['onPageSelected']
 })
 export default class Paginator extends Vue {
-  listItems: [] = []
+  get charactersListMetas (): ApiPaginationInfo {
+    return rmStore.getState().charactersListInfo
+  }
 
-  loadNextPage (page: number): void {
-    alert('loading page: ' + page)
+  get currentPage (): number {
+    return rmStore.getState().currentPage
+  }
+
+  loadPage (pageToLoad: number): void {
+    let newPage = pageToLoad
+    if (pageToLoad === 0) {
+      newPage = --rmStore.getState().currentPage
+    } else if (pageToLoad === this.charactersListMetas.count) {
+      newPage = ++rmStore.getState().currentPage
+    }
+    this.$emit('onPageSelected', newPage)
   }
 }
 </script>

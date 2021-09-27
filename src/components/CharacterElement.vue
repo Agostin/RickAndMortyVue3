@@ -1,25 +1,20 @@
 <template>
-  <div class="character-row-element mb-2 shadow-sm p-2">
-    <div class="d-flex text-start" v-if="character">
+  <div class="character-block col-xs-12 col-sm-6 col-lg-4 p-2"
+    @click="onSelectCharacter">
+    <div class="d-flex text-start boder rounded shadow-sm" v-if="character">
       <div class="flex-shrink-1 image">
-        <img :src="character.image" width="125" class="img-thumbnail mx-auto d-block" :alt="`Image of character ${character.name}`">
+        <img :src="character.image" width="120" class="rounded-start" :alt="`Image of character ${character.name}`">
       </div>
-      <div class="ps-3 flex-grow-1 mb-2 main-info">
-        <div class="d-block text-truncate">
-          <div class="d-flex align-items-center">
-            <span class="fw-bold fs-5">{{ character.name }}</span>
-            <span class="text-muted ms-1" v-if="character.species">({{ character.species }})</span>
-          </div>
-          <div class="d-block" v-if="character.gender">
-            Gender: <span class="badge bg-secondary me-2">{{ character.gender }}</span>
-          </div>
-          <div class="d-block" v-if="character.status">
-            Status: <span class="badge bg-success" >{{ character.status }}</span>
-          </div>
+      <div class="ps-3 flex-grow-1 mb-2">
+        <div class="lh-1 my-2">
+          <span class="fw-bold fs-5">{{ character.name }}</span>
+          <span class="text-muted ms-1" v-if="character.species">({{ character.species }})</span>
         </div>
-        <div class="d-flex justify-content-start align-items-center">
-          <button class="btn btn-link px-0" type="button"
-            @click="onSelectCharacter">More details</button>
+        <div class="d-block" v-if="character.gender">
+          Gender: <span class="badge bg-secondary me-2">{{ character.gender }}</span>
+        </div>
+        <div class="d-block" v-if="character.status">
+          Status: <span class="badge bg-success" >{{ character.status }}</span>
         </div>
       </div>
     </div>
@@ -60,8 +55,13 @@ export default class CharacterElement extends Vue {
 </script>
 
 <style scoped lang="scss">
-.character-row-element {
-  .image {}
-  .info {}
+.character-block {
+  transition: all .5s;
+  > .d-flex {
+    cursor: pointer;
+    &:hover {
+      box-shadow: 0 2px 15px lightgrey !important
+    }
+  }
 }
 </style>
