@@ -13,10 +13,12 @@
         <ul id="characters-list">
           <CharacterElement
             v-for="(ch, index) in charactersList"
-            :key="index"
-            :character-id="ch.id"
+            :key="index" :character-id="ch.id"
+            @on-character-selected="toggleMoreDetails = `${$event}_${Date.now()}`"
           />
         </ul>
+        <CharacterDetails :show="toggleMoreDetails" />
+        <Paginator />
       </template>
     </div>
   </div>
@@ -30,14 +32,19 @@ import { Character } from '@/interfaces'
 import { rmStore } from '@/store/store'
 
 import CharacterElement from '@/components/CharacterElement.vue'
+import CharacterDetails from '@/components/CharacterDetails.vue'
+import Paginator from '@/components/Paginator.vue'
 
 @Options({
   components: {
-    CharacterElement
+    CharacterElement,
+    CharacterDetails,
+    Paginator
   }
 })
 export default class Home extends Vue {
   isLoading = Boolean(true)
+  toggleMoreDetails: string | null = null
   charactersList = reactive<Character[]>([])
 
   async mounted (): Promise<void> {

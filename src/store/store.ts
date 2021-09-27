@@ -15,7 +15,7 @@ class RMStore extends PersistentStore<RootState> {
     }
   }
 
-  setCurrentCharacterById(characterId: number) {
+  setCurrentCharacterFromId(characterId: number) {
     const chMatch = this.state.characterList.find((c: Character) => c.id === characterId)
     Object.assign(this.state.currentCharacter, chMatch)
   }
