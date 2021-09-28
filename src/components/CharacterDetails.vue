@@ -50,7 +50,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" @click="showModal = false">Close, thanks</button>
+        <button type="button" class="btn btn-primary" @click="showModal = false">Got it!</button>
       </div>
     </div>
   </div>
