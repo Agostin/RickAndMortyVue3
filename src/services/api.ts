@@ -15,6 +15,17 @@ export function getCharacters(page = 1): Promise<RMApiResponse | string> {
     })
 }
 
+export function getCharactersFromName(name: string): Promise<RMApiResponse | string> {
+  return axios
+    .get(`${basePath}/character/?name=${name}`)
+    .then((res: AxiosResponse) => {
+      return res.data as RMApiResponse
+    })
+    .catch((err: AxiosError) => {
+      return err.code as string
+    })
+}
+
 export function getEpisodesByIds(episodeIds: string): Promise<Episode[] | string> {
   const isMoreThanOneEpisode = episodeIds.split(',').length > 1
   return axios

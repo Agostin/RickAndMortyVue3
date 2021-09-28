@@ -3,16 +3,22 @@
 </template>
 
 <style lang="scss">
+@import './assets';
+
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  color: $black;
   height: 100vh;
+  background: white;
 
   .modal.show {
     background: rgba(0,0,0,.4);
+  }
+
+  * {
+    font-family: -apple-system,'BlinkMacSystemFont','Segoe UI','Roboto','Helvetica','Arial',sans-serif,'Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol';
   }
 }
 </style>

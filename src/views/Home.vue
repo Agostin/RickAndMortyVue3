@@ -1,6 +1,6 @@
 <template>
   <div id="home" class="h-100">
-    <div class="container h-100">
+    <div class="container-fluid h-100">
       <template v-if="isLoading">
         <div class="d-flex h-100 justify-content-center align-items-center">
           <div class="spinner-grow text-success" style="width: 5rem; height: 5rem;" role="status">
@@ -9,20 +9,35 @@
         </div>
       </template>
       <div class="row" v-else>
-        <div class="col text-start py-4">
-          <h2>Rick and Morty'a characters list: </h2>
-          <div class="d-block my-2">
-            <input type="text" class="form-control" placeholder="Filter by name" v-model="nameFilter">
+        <div class="title-wrapper d-block text-center py-4">
+          <h1 class="text-hero">Rick and Morty'a characters list:</h1>
+        </div>
+        <div class="list-wrapper col text-start">
+          <div class="d-flex mt-5 mx-2 mb-3">
+            <input type="text" class="form-control" placeholder="Find your favourite character by name" v-model="nameFilter">
+            <!-- <template v-if="filteredList.length === 0">
+              <button class="btn btn-secondary" type="button" @click="searchCharacterFromApi">Search</button>
+            </template> -->
           </div>
-          <ul class="p-0 m-0 row" id="characters-list">
-            <CharacterElement
-              v-for="(ch, index) in filteredList"
-              :key="index" :character-id="ch.id"
-              @on-character-selected="toggleMoreDetails = `${$event}_${Date.now()}`"
-            />
-          </ul>
-          <CharacterDetails :show="toggleMoreDetails" />
-          <Paginator class="mt-3" @on-page-selected="loadNewCharacterPage($event)" />
+          <template v-if="filteredList.length">
+            <ul class="p-0 m-0 row" id="characters-list">
+              <CharacterElement
+                v-for="(ch, index) in filteredList"
+                :key="index" :character-id="ch.id"
+                @on-character-selected="toggleMoreDetails = `${$event}_${Date.now()}`"
+              />
+            </ul>
+            <CharacterDetails :show="toggleMoreDetails" />
+            <Paginator class="my-5" @on-page-selected="loadNewCharacterPage($event)" />
+          </template>
+          <template v-else>
+            <div class="alert alert-light my-4 mx-2" role="alert">
+              <h4 class="alert-heading">Oops!</h4>
+              <p>We didn't find any match! Are you sure you typed it right?</p>
+              <hr>
+              <p class="mb-0">Please try again</p>
+            </div>
+          </template>
         </div>
       </div>
     </div>
@@ -32,7 +47,7 @@
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component'
 import { reactive } from 'vue'
-import { getCharacters } from '@/services/api'
+import { getCharacters, getCharactersFromName } from '@/services/api'
 import { Character } from '@/interfaces'
 import { rmStore } from '@/store/store'
 
@@ -77,9 +92,34 @@ export default class Home extends Vue {
     this.isLoading = false
   }
 
+  async searchCharacterFromApi (): Promise<void> {
+    this.isLoading = true
+    const response = await getCharactersFromName(this.nameFilter as string)
+    if (typeof response !== 'string') {
+      this.charactersList = response.results as Character[]
+      rmStore.setCharactersList(this.charactersList)
+      rmStore.setCharactersListInfo(response.info)
+    }
+    this.isLoading = false
+  }
+
   loadNewCharacterPage (page: number): void {
     rmStore.setCurrentPage(page)
+    this.toggleMoreDetails = null
     this.loadCharacters(page)
   }
 }
 </script>
+
+<style scoped lang="scss">
+@import '../assets';
+
+#home {
+  .text-hero {
+    font-size: 3.75rem;
+  }
+  .list-wrapper {
+    background: $black;
+  }
+}
+</style>

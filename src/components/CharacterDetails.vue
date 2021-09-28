@@ -1,43 +1,53 @@
 <template>
 <div class="modal fade" :class="{ 'show d-block': showModal }" v-if="showModal">
-  <div class="modal-dialog modal-dialog-centered modal-lg">
+  <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg">
     <div class="modal-content" v-if="character">
       <div class="modal-header">
         <h5 class="modal-title">Who's {{ character.name }}?</h5>
         <button type="button" class="btn-close" @click="showModal = false"></button>
       </div>
       <div class="modal-body">
-        <div class="row g-0">
+        <div class="row">
           <div class="col-md-3">
             <img :src="character.image" class="img-fluid rounded-start">
           </div>
-          <div class="col-md-9 ps-3 text-start">
-            <strong class="fs-5">{{ character.name }}</strong>
-            <p class="mb-0" v-if="character.species">
-              Species: <span class="badge bg-primary me-2">{{ character.species }}</span>
-            </p>
-            <p class="mb-0" v-if="character.gender">
-              Gender: <span class="badge bg-secondary me-2">{{ character.gender }}</span>
-            </p>
-            <p class="mb-0" v-if="character.status">
-              Status: <span class="badge bg-success me-2">{{ character.status }}</span>
-            </p>
-            <template v-if="characterEpisodes.length">
-              <strong class="d-block mt-2">Location: </strong>
-              <table class="table table-success my-1" v-if="characterLocation?.name">
-                <tbody>
-                  <tr>
-                    <td>{{ characterLocation.name }}</td>
-                    <td>{{ characterLocation.residents?.length }}</td>
-                    <td>{{ characterLocation.dimension }}</td>
-                  </tr>
-                </tbody>
-              </table>
+          <div class="col-md-9 text-start">
+            <p class="fw-bold fs-2 mb-1 lh-sm">{{ character.name }}</p>
+            <div class="row">
+              <div class="col-sm-4">
+                <p class="mb-0" v-if="character.gender">
+                  Gender: <span class="badge bg-secondary me-2">{{ character.gender }}</span>
+                </p>
+              </div>
+              <div class="col-sm-4 text-center">
+                <p class="mb-0" v-if="character.species">
+                  Species: <span class="badge bg-primary me-2">{{ character.species }}</span>
+                </p>
+              </div>
+              <div class="col-sm-4 text-end">
+                <p class="mb-0" v-if="character.status">
+                  Status: <span class="badge bg-success me-2">{{ character.status }}</span>
+                </p>
+              </div>
+            </div>
+            <template v-if="characterLocation">
+              <div class="d-block mt-4">
+                <label class="fw-bold mb-1 text-muted">Last known location:</label>
+                <p class="fs-5 mb-0">{{ characterLocation.name }} - {{ characterLocation.dimension }}</p>
+                <p class="text-muted">{{ characterLocation.residents?.length }} residents</p>
+              </div>
             </template>
           </div>
-          <div class="col-md-12 mt-1 text-start" v-if="characterEpisodes.length">
-            <strong class="d-block mt-2">Episodes: </strong>
+          <div class="col-md-12 mt-2 mb-1 text-start" v-if="characterEpisodes.length">
+            <strong class="d-block mt-2">Episodes where {{ character.name }} is featured on: </strong>
             <table class="table table-secondary table-striped my-1">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Title</th>
+                  <th>Air date</th>
+                </tr>
+              </thead>
               <tbody>
                 <tr v-for="ep in characterEpisodes" :key="ep.id">
                   <th scope="row">{{ ep.episode }}</th>
@@ -50,7 +60,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" @click="showModal = false">Got it!</button>
+        <button type="button" class="btn btn-primary" @click="showModal = false">OK, got it!</button>
       </div>
     </div>
   </div>
