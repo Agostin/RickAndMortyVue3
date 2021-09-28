@@ -1,6 +1,6 @@
 <template>
-<nav>
-  <ul class="pagination justify-content-center d-flex flex-wrap">
+<nav class="table-responsive mb-2 shadow">
+  <ul class="pagination mb-3">
     <li class="page-item" v-if="currentPage > 1">
       <a class="page-link" @click="loadPage(0)"><span aria-hidden="true">Previous</span></a>
     </li>
@@ -32,6 +32,12 @@ export default class Paginator extends Vue {
     return rmStore.getState().currentPage
   }
 
+  mounted (): void {
+    if (this.charactersListMetas.count === 1) {
+
+    }
+  }
+
   loadPage (pageToLoad: number | null): void {
     let newPage = pageToLoad
     if (pageToLoad === 0) {
@@ -45,21 +51,28 @@ export default class Paginator extends Vue {
 </script>
 <style lang="scss" scoped>
 @import '../assets';
-.pagination {
-  .page-item {
-    cursor: pointer;
-    &.active,
-    &:hover {
-      .page-link {
-        color: white;
-        background-color: $dark-gray;
-        border-color: $dark-gray;
+nav {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  .pagination {
+    .page-item {
+      cursor: pointer;
+      &.active,
+      &:hover {
+        .page-link {
+          color: white;
+          background-color: $dark-gray;
+          border-color: $dark-gray;
+        }
       }
-    }
-    .page-link {
-      color: $dark-gray;
-      background-color: white;
-      border-color: white;
+      .page-link {
+        color: $dark-gray;
+        background-color: white;
+        border-color: white;
+      }
     }
   }
 }

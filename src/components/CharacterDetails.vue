@@ -3,7 +3,7 @@
   <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg">
     <div class="modal-content" v-if="character">
       <div class="modal-header">
-        <h5 class="modal-title">Who's {{ character.name }}?</h5>
+        <h5 class="modal-title">{{ character.name }}'s details</h5>
         <button type="button" class="btn-close" @click="showModal = false"></button>
       </div>
       <div class="modal-body">
@@ -34,11 +34,12 @@
               <div class="d-block mt-4">
                 <label class="fw-bold mb-1 text-muted">Last known location:</label>
                 <p class="fs-5 mb-0">{{ characterLocation.name }} - {{ characterLocation.dimension }}</p>
-                <p class="text-muted">{{ characterLocation.residents?.length }} residents</p>
+                <em class="text-secondary">{{ characterLocation.residents?.length }} residents</em>
               </div>
             </template>
           </div>
           <div class="col-md-12 mt-2 mb-1 text-start" v-if="characterEpisodes.length">
+            <hr>
             <strong class="d-block mt-2">Episodes where {{ character.name }} is featured on: </strong>
             <table class="table table-secondary table-striped my-1">
               <thead>

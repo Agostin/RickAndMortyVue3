@@ -65,7 +65,7 @@ export default class CharacterElement extends Vue {
     color: white;
     cursor: pointer;
     &:hover {
-      box-shadow: 0 2px 15px lightgrey !important
+      box-shadow: 0 .2rem 1.5rem darken($black, 15%) !important
     }
     .bullet {
       border-radius: 25rem;

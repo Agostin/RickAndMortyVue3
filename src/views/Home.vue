@@ -3,7 +3,7 @@
     <div class="container-fluid h-100">
       <template v-if="isLoading">
         <div class="d-flex h-100 justify-content-center align-items-center">
-          <div class="spinner-grow text-success" style="width: 5rem; height: 5rem;" role="status">
+          <div class="spinner-grow text-secondary" style="width: 5rem; height: 5rem;" role="status">
             <span class="visually-hidden">Loading...</span>
           </div>
         </div>
