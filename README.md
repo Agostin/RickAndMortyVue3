@@ -10,4 +10,4 @@ If you prefer to build the project just run `npm run build` onto you CLI and go 
 ### Credits
 I hope that everything will works and will also respect the requirements. Even if it's a row project, it has been done with the ❤️
 
-## Thank you! 
+## Thank you! 🙏🏼

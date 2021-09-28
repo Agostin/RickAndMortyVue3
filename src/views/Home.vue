@@ -8,16 +8,22 @@
           </div>
         </div>
       </template>
-      <div class="row" v-else>
+      <div class="row h-100" v-else>
         <div class="title-wrapper d-block text-center py-4">
           <h1 class="text-hero">Rick and Morty'a characters list:</h1>
         </div>
         <div class="list-wrapper col text-start">
-          <div class="d-flex mt-5 mx-2 mb-3">
-            <input type="text" class="form-control" placeholder="Find your favourite character by name" v-model="nameFilter">
-            <!-- <template v-if="filteredList.length === 0">
-              <button class="btn btn-secondary" type="button" @click="searchCharacterFromApi">Search</button>
-            </template> -->
+          <div class="d-block mt-5 mx-2 mb-3">
+            <div class="row m-0">
+              <div class="input-group col p-0">
+                <span class="input-group-text">🔍</span>
+                <input type="text" class="form-control" placeholder="Filter characters by name..." v-model="nameFilter">
+              </div>
+              <template v-if="filteredList.length === 0">
+                <button class="btn btn-success col" type="button" style="max-width: 10rem"
+                  @click="searchCharacterFromApi">Search More</button>
+              </template>
+            </div>
           </div>
           <template v-if="filteredList.length">
             <ul class="p-0 m-0 row" id="characters-list">
@@ -33,9 +39,7 @@
           <template v-else>
             <div class="alert alert-light my-4 mx-2" role="alert">
               <h4 class="alert-heading">Oops!</h4>
-              <p>We didn't find any match! Are you sure you typed it right?</p>
-              <hr>
-              <p class="mb-0">Please try again</p>
+              <p class="fs-5">We didn't find a match! If you're sure that you typed right, please click on the "Search More" button to make a deeper search</p>
             </div>
           </template>
         </div>
@@ -106,6 +110,7 @@ export default class Home extends Vue {
   loadNewCharacterPage (page: number): void {
     rmStore.setCurrentPage(page)
     this.toggleMoreDetails = null
+    this.nameFilter = ''
     this.loadCharacters(page)
   }
 }

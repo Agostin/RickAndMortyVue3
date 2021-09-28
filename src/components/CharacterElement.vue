@@ -1,5 +1,5 @@
 <template>
-  <div class="character-block-wrapper col-xs-12 col-sm-6 p-2" @click="onSelectCharacter">
+  <div class="character-block-wrapper col-xs-12 col-md-6 p-2" @click="onSelectCharacter">
     <div class="character-block d-flex text-start rounded-3 shadow-sm text-break" v-if="character">
       <div class="flex-shrink-1 image">
         <img :src="character.image" width="220" class="rounded-start" :alt="`Image of character ${character.name}`">
