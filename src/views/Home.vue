@@ -88,7 +88,7 @@ export default class Home extends Vue {
   async loadCharacters (page = 1): Promise<void> {
     this.isLoading = true
     const response = await getCharacters(page)
-    if (typeof response !== 'string') {
+    if (response && typeof response !== 'string') {
       this.charactersList = response.results as Character[]
       rmStore.setCharactersList(this.charactersList)
       rmStore.setCharactersListInfo(response.info)
@@ -99,7 +99,7 @@ export default class Home extends Vue {
   async searchCharacterFromApi (): Promise<void> {
     this.isLoading = true
     const response = await getCharactersFromName(this.nameFilter as string)
-    if (typeof response !== 'string') {
+    if (response && typeof response !== 'string') {
       this.charactersList = response.results as Character[]
       rmStore.setCharactersList(this.charactersList)
       rmStore.setCharactersListInfo(response.info)
