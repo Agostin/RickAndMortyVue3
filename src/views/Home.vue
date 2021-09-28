@@ -10,7 +10,7 @@
       </template>
       <div class="row h-100" v-else>
         <div class="title-wrapper d-block text-center py-4">
-          <h1 class="text-hero">Rick and Morty'a characters list:</h1>
+          <h1 class="text-hero m-0">Rick and Morty's characters list:</h1>
         </div>
         <div class="list-wrapper col text-start">
           <div class="d-block mt-5 mx-2 mb-3">
@@ -122,6 +122,7 @@ export default class Home extends Vue {
 #home {
   .text-hero {
     font-size: 3.75rem;
+    font-weight: bold;
   }
   .list-wrapper {
     background: $black;
