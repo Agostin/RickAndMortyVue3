@@ -1,29 +1,16 @@
-# rick-and-morty
+# Rick and Morty Simple Sample 👽🤖
 
-## Project setup
-```
-npm install
-```
+## Before to start
+Please run the command `npm install` to install all the dependencies that will allow you to properly run and see the result of this project
 
 ### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
+If you want to see a development version of the software you can run `npm run serve` onto your CLI to start it on a local server.
+If you prefer to build the project just run `npm run serve` onto you CLI and go into `/dist` folder
 
 ### Run your unit tests
-```
-npm run test:unit
-```
+Honestly there aren't unit test set on this project...
 
-### Lints and fixes files
-```
-npm run lint
-```
+### Credits
+I hope that everything will works and will also respect the requirements. Even if it's a row project, it has been done with the ❤️
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## Thank you! 
