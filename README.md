@@ -5,10 +5,7 @@ Please run the command `npm install` to install all the dependencies that will a
 
 ### Compiles and hot-reloads for development
 If you want to see a development version of the software you can run `npm run serve` onto your CLI to start it on a local server.
-If you prefer to build the project just run `npm run serve` onto you CLI and go into `/dist` folder
-
-### Run your unit tests
-Honestly there aren't unit test set on this project...
+If you prefer to build the project just run `npm run build` onto you CLI and go into `/dist` folder
 
 ### Credits
 I hope that everything will works and will also respect the requirements. Even if it's a row project, it has been done with the ❤️
